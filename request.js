@@ -1,4 +1,4 @@
-define(function() {
+define(["q"], function(Q) {
     var getVars = function(obj) {
         var props = Object.getOwnPropertyNames(obj);
         return '?' + props.map(function(name) {
@@ -6,22 +6,24 @@ define(function() {
         }).join('&');
     };
 
-    var request = function(settings) {
-        if (settings.url.length === 0) {
+    var request = function(url, params) {
+        if (url.length === 0) {
             throw ("URL not set.");
         }
+        var deferred = Q.defer();
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", settings.url + getVars(settings.content), true);
+        xhr.open("GET", url + getVars(params), true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    settings.success(xhr.responseText);
+                    deferred.resolve(xhr.responseText);
                 } else {
-                    settings.error ? settings.error(xhr.status) : console.error(xhr.status);
+                    deferred.reject(xhr.status);
                 }
             }
         };
         xhr.send();
+        return deferred.promise;
     };
 
     return request;

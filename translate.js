@@ -9,18 +9,17 @@ require(["request"], function(request) {
             if (text.length === 0) {
                 throw ("The text you intend to translate must not be empty.");
             }
-            request({
-                url: "http://ajax.googleapis.com/ajax/services/language/translate",
-                content: {
-                    v: "1.0",
-                    q: text,
-                    langpair: "|en"
-                },
-                success: function(data) {
-                    var json = JSON.parse(data),
-                        translation = json.responseData.translatedText;
-                    alert(translation);
-                }
+            var response = request("http://ajax.googleapis.com/ajax/services/language/translate", {
+                v: "1.0",
+                q: text,
+                langpair: "|en"
+            });
+            response.then(function(data) {
+                var json = JSON.parse(data),
+                    translation = json.responseData.translatedText;
+                alert(translation);
+            }, function(reason) {
+                alert("Oops! Something went wrong.");
             });
         }
     });
