@@ -1,7 +1,4 @@
-(function(global) {
-
-    var exports = exports || {};
-
+define(function() {
     var getVars = function(obj) {
         var props = Object.getOwnPropertyNames(obj);
         return '?' + props.map(function(name) {
@@ -27,8 +24,6 @@
         xhr.send();
     };
 
-    exports.request = request;
-    global.request = request;
+    return request;
 
-}(this));
-
+});
