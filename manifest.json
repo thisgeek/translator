@@ -1,0 +1,9 @@
+{
+    "name": "Translator",
+    "version": "0.0.1",
+    "permissions": [
+        "contextMenus",
+        "http://ajax.googleapis.com/"
+    ],
+    "background_page": "background.html"
+}
