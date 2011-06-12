@@ -1,4 +1,4 @@
-require(["request"], function(request) {
+require(["googletranslator"], function(translator) {
     var contextMenus = chrome.contextMenus;
 
     contextMenus.create({
@@ -9,14 +9,9 @@ require(["request"], function(request) {
             if (text.length === 0) {
                 throw ("The text you intend to translate must not be empty.");
             }
-            var response = request("http://ajax.googleapis.com/ajax/services/language/translate", {
-                v: "1.0",
-                q: text,
-                langpair: "|en"
-            });
-            response.then(function(data) {
-                var json = JSON.parse(data),
-                    translation = json.responseData.translatedText;
+            var response = translator.make({ to: 'en' }).translate(text);
+
+            response.then(function(translation) {
                 alert(translation);
             }, function(reason) {
                 alert("Oops! Something went wrong.");
